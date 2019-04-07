@@ -16,9 +16,6 @@
     "require": {
         "php": ">=5.5.9"
     },
-    "require-dev": {
-        "phpunit/phpunit": "^6.5"
-    },
     "autoload": {
         "psr-4": {
             "Royalcms\\Component\\Downloader\\": "Royalcms/Component/Downloader"
