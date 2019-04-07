@@ -6,13 +6,15 @@
 
 use Royalcms\Component\Downloader\Downloader;
 
+include __DIR__ . '/../vendor/autoload.php';
+
 $url = 'http://uni.mirrors.163.com/ubuntu-releases/19.04/ubuntu-19.04-beta-desktop-amd64.iso';
 $outputFile = pathinfo($url, PATHINFO_BASENAME);
 
 $downloader = new Downloader($url);
 $downloader->setOutputFile($outputFile);
-$downloader->setMinCallbackPeriod(6);
-$downloader->setMaxParallelChunks(60);
+$downloader->setMinCallbackPeriod(3);
+$downloader->setMaxParallelChunks(30);
 $downloader->setChunkSize(1024 * 1024);
 
 $downloader->setProgressCallback(function($position, $totalBytes) use ($downloader)
@@ -27,8 +29,11 @@ $downloader->setProgressCallback(function($position, $totalBytes) use ($download
     $totalBytesFormatted = round($totalBytes / 1024 / 1024, 2) . 'MB';
     $streams = $downloader->getRunningChunks();
 
-    if ($now - $prevTime < 1e3)
-      echo "speed: $speed; done: $positionFormatted / $totalBytesFormatted; streams: $streams\n";
+    if ($now - $prevTime < 1e3) {
+        echo "speed: $speed; done: $positionFormatted / $totalBytesFormatted; streams: $streams\n";
+        flush();
+    }
+
 
     $prevPosition = $position;
     $prevTime = $now;
@@ -36,11 +41,17 @@ $downloader->setProgressCallback(function($position, $totalBytes) use ($download
     return true;
   });
 
-echo "Downloading $url ...\n";
-echo "Content length: " . $downloader->getTotalBytes() . " bytes\n";
+ignore_user_abort(true);    //By closing the browser, the PHP script can continue to execute.
+set_time_limit(0);          // Let the program execute without limit by set_time_limit(0)
+ini_set('output_buffering', 0);
+
+echo "<pre>";
+echo "Downloading $url ...\n"; flush();
+echo "Content length: " . $downloader->getTotalBytes() . " bytes\n"; flush();
 
 $downloader->download();
 
-echo "Done!\n";
-echo "Output file size: " . filesize($outputFile) . " bytes\n";
-echo "Output file MD5: " . md5_file($outputFile) . "\n";
+echo "Done!\n"; flush();
+echo "Output file size: " . filesize($outputFile) . " bytes\n"; flush();
+echo "Output file MD5: " . md5_file($outputFile) . "\n"; flush();
+echo "<pre>";
