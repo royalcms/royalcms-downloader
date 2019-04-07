@@ -1,0 +1,33 @@
+{
+    "name": "royalcms/downloader",
+    "description": "The Royalcms Downloader package. PHP class for muti-stream downloads over HTTP protocol.",
+    "license": "MIT",
+    "homepage": "http://royalcms.cn",
+    "support": {
+        "issues": "https://github.com/royalcms/framework/issues",
+        "source": "https://github.com/royalcms/framework"
+    },
+    "authors": [
+        {
+            "name": "Royal Wang",
+            "email": "hxroyal@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Royalcms\\Component\\Downloader\\": "Royalcms/Component/Downloader"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "5.0-dev"
+        }
+    },
+    "minimum-stability": "dev"
+}
